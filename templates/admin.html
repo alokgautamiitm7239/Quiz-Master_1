@@ -1,0 +1,79 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+
+<h3 class="p-3" style="font-family: 'Times New Roman', Times, serif; font-weight: bold;">
+    Admin dashboard!!
+</h3>
+<br><br>
+
+<!-- Cards -->
+{% if subjects %}
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for subject in subjects %}
+        <div class="col">
+            <div class="card h-100 d-flex flex-column">
+                <div class="card-body flex-grow-1">
+                 <h5 class="card-title" style="color: rgb(149, 3, 3); font-weight: bold;">{{ subject.name }}</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                        {% if subject.chapters %}
+                            <thead>
+                                <tr>
+                                    <th>Chapter Id</th>
+                                    <th>Chapter Name</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                {% for chapter in subject.chapters%}
+                                <tr >
+                                    <td>{{chapter.id}}</td>
+                                    <td >{{chapter.name}}</td>
+                                    <td>{{chapter.description}}</td>
+                                    <td>
+                                        <a href="#" class="text-primary">Edit</a>
+                                        <a href="#" class="text-danger">Delete</a>
+                                    </td>
+                                </tr>
+                                {%endfor%}
+                            </tbody>
+                        {%else%}
+                            <div>
+                              <h3 class="center">No chapters are there..!</h3>
+                            </div>
+                        {%endif%}
+                        </table>
+                    </div>
+
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <!-- Add Chapter Button -->
+                    <a href="/add_chapter/{{subject.id}}/{{id}}" class="btn btn-outline-success w-100">+ Add Chapter</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{%else%}
+  <div>
+    <h5 class="center">No Subjects are there..!</h5>
+  </div>
+
+{% endif %}
+
+
+
+
+<br><br>
+
+<!-- Add Subject Button Centered -->
+<div class="d-flex justify-content-center">
+    <a type="button" class="btn btn-success" href="/add_subject/{{id}}">+ Add Subject</a>
+</div>
+
+{% endblock %}

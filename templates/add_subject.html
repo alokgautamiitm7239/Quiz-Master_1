@@ -1,0 +1,21 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+<br><br><br><br>
+    <div class="login-container">
+        <h3 >New Subject</h3>
+        <form action="/add_subject/{{id}}" method="POST">
+            <div class="input-group">
+                <label for="name">Subject name :</label>
+                <input type="text" name="name" id="name" placeholder="Enter subject name" required>
+            </div>
+            <div class="input-group">
+                <label for="description">Description :</label>
+                <input type="text" name="description" id="description" placeholder="Description..." required>
+            </div>
+            <button type="submit">Save</button>
+            <a href="/admin/{{id}}" type="button" class="btn">Go Back</a>
+            <br>
+        </form>
+        <div class="center">{{msg}}</div>
+    </div>
+{% endblock %}

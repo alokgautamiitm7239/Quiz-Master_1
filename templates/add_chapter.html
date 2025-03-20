@@ -1,0 +1,26 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+<br><br><br><br>
+    <div class="login-container">
+        <h3 >New Chapter</h3>
+        <form action="/add_chapter/{{sub_id}}/{{id}}" method="POST">
+            <div class="input-group">
+                <label for="name">Chapter name :</label>
+                <input type="text" name="name" id="name" placeholder="Enter chapter name" required>
+            </div>
+            <div class="input-group">
+                <label for="description">Description :</label>
+                <input type="text" name="description" id="description" placeholder="Description..." required>
+            </div>
+            <div class="input-group">
+                <label for="id">Subject ID :</label>     
+                <input name="id" type="number" id="id"  value="{{sub_id}}" readonly>  <!-- This is for only read the data but not show in page  -->
+            </div>
+
+            <button type="submit">Save</button>
+            <a href="/admin/{{id}}" type="button" class="btn">Go Back</a>
+            <br>
+        </form>
+        <div class="center">{{msg}}</div>
+    </div>
+{% endblock %}

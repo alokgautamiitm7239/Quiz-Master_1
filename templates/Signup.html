@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign page</title>
+    <!-- <link rel="stylesheet" href="/My_movie_ticket/static/main.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+
+</head>
+<body>
+    <div class="login-container">
+        <img src="/static/Screenshot 2025-03-05 200445.png" alt="missing" width="150px">
+        <h1>Register</h1>
+        <form action="/register" method="POST">
+            <div class="input-group">
+                <label for="user_name">Full name</label>
+                <input name="user_name" type="name" id="user_name" placeholder="Enter your first name" required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input name="email" type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input name="password" type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="qualification">Qualification</label>
+                <input name="qualification" type="text" id="qualification" placeholder="Intermediate , Diplomatic , Graduate" required></input>
+            </div>
+
+            <div class="input-group">
+                <label for="dob">Date of Birth </label>
+                <input name="dob" type="date" id="dob" required>
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p class="signup-link">Already existing student ? <a href="/login">Login</a></p>
+    </div>
+</body>
+</html>

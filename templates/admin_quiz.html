@@ -1,0 +1,80 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+
+<h3 class="p-3" style="font-family: 'Times New Roman', Times, serif; font-weight: bold;">
+    Quiz Management!!
+</h3>
+<br><br>
+
+<!-- Cards -->
+{% if quizzes %}
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for quiz in quizzes %}
+        <div class="col">
+            <div class="card h-100 d-flex flex-column">
+                <div class="card-body flex-grow-1">
+                 <h5 class="card-title" style="color: rgb(149, 3, 3); font-weight: bold; font-family: Georgia, 'Times New Roman', Times, serif;">Quiz Id : {{ quiz.id }}</h5>
+                 <h6 style="color: blue;">Date of Quiz : {{quiz.date_of_quiz}}</h6>
+                 <h6>Time duration(In Minutes) : {{quiz.time_duration_minutes}}</h6>
+                    <div class="table-responsive">
+                        <h6>Chapter Id : {{quiz.chapter_id}}</h6>
+                        <table class="table table-bordered">
+                        {% if quiz.questions %}
+                            <thead>
+                                <tr>
+                                    <th>Que. Id</th>
+                                    <th>Statement</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                 {% for question in quiz.questions%}
+                                <tr>
+                                    <td>{{question.id}}</td>
+                                    <td class="signup-link"><a href="" style="color: black;">{{question.question_statement}}</a></td>
+                                    <td>
+                                        <a href="#" class="text-primary">Edit</a> /
+                                        <a href="#" class="text-danger">Delete</a>
+                                    </td>
+                                </tr>
+                                {%endfor%}
+                            </tbody>
+                        {%else%}
+                            <div>
+                              <h4 class="center">No questions are there..!</h4>
+                            </div>
+                        {%endif%}
+                        </table>
+                    </div>
+
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <!-- Add Chapter Button -->
+                    <a href="/add_que/{{quiz.id}}/{{id}}" class="btn btn-outline-success w-100">+ Add Questions</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{%else%}
+  <div>
+    <h5 class="center">No Subjects are there..!</h5>
+  </div>
+
+{% endif %}
+
+
+
+
+<br><br>
+
+<!-- Add Subject Button Centered -->
+<div class="d-flex justify-content-center">
+    <a type="button" class="btn btn-success" href="/add_quiz/{{id}}">+ New Quiz</a>
+</div>
+
+{% endblock %}
