@@ -1,0 +1,49 @@
+{% extends "user_layout.html" %}
+{% block content %}
+{%if questions%}
+<div class="container mt-4">
+    <div class="d-flex justify-content-center"> 
+        <div class="card w-50">
+            <div class="card-body">
+                <div class="card-header text-center bg-primary text-white">
+                    <h3 class="card-title mb-0">Answer the below question</h3>
+                </div>
+                <div class="card-body">
+                    {%for question in questions%}
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">{{question.id}}. {{question.question_statement}}</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q1" value="Paris">
+                                <label class="form-check-label">{{question.option1}}</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q1" value="London">
+                                <label class="form-check-label">{{question.option2}}</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q1" value="Berlin">
+                                <label class="form-check-label">{{question.option3}}</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q1" value="Berlin">
+                                <label class="form-check-label">{{question.option4}}</label>
+                            </div>
+                        </div>
+                    </form>
+                {%endfor%}               
+                <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info text-center mt-4">
+    <h5>Quiz not started yet</h5>
+    <a href="/user/{{id}}" class="btn btn-primary">Go Back</a>
+</div>
+{% endif %}
+
+{% endblock %}
+

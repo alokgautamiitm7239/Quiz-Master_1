@@ -1,0 +1,35 @@
+{% extends "user_layout.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-center"> 
+        <div class="card w-50">
+            <div class="card-body">
+                <div class="card-header text-center bg-primary text-white">
+                    <h3 class="card-title mb-0">Quiz Details</h3>
+                </div>
+                <div class="card-body">
+                    <!-- opgkgpodfo -->
+                    <div class="table-responsive">
+                        <table class="table table-borderedless">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Subject name</th>
+                                    <th>Chapter name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ subject.name }}</td>
+                                    <td>{{ chapter.name }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- jhhhhiuiu -->
+                </div>
+                <a href="/user/{{id}}" class="btn btn-primary">Go Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

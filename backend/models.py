@@ -20,7 +20,7 @@ class Subject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(), nullable=False)
     description = db.Column(db.String(), nullable=False)
-    chapters = db.relationship("Chapter", cascade="all,delete", backref="subject", lazy=True)
+    chapters = db.relationship("Chapter", cascade="all,delete-orphan", backref="subject", lazy=True)
 
 # Entity 3: Chapter
 class Chapter(db.Model):

@@ -2,7 +2,7 @@
 {% block content %}
 
 <h3 class="p-3" style="font-family: 'Times New Roman', Times, serif; font-weight: bold;">
-    Admin dashboard!!
+    Admin Dashboard !
 </h3>
 <br><br>
 
@@ -16,9 +16,9 @@
                 <div class="card-body flex-grow-1">
                  <h5 class="card-title" style="color: rgb(149, 3, 3); font-weight: bold;">{{ subject.name }}</h5>
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-striped">
                         {% if subject.chapters %}
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>Chapter Id</th>
                                     <th>Chapter Name</th>
@@ -34,8 +34,8 @@
                                     <td >{{chapter.name}}</td>
                                     <td>{{chapter.description}}</td>
                                     <td>
-                                        <a href="#" class="text-primary">Edit</a>
-                                        <a href="#" class="text-danger">Delete</a>
+                                        <a href="#" class="btn btn-sm btn-warning">Edit</a> 
+                                       <a href="#" class="btn btn-sm btn-danger">Delete</a>
                                     </td>
                                 </tr>
                                 {%endfor%}

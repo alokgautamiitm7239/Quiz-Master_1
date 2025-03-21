@@ -17,10 +17,8 @@ def signin():
         usr=User_Info.query.filter_by(email=id,password=pwd).first()
         if usr and usr.role==0: #Exisiting user and admin
             return redirect(url_for("admin_dashboard",id=id))
-            # return render_template("admin.html")
         elif usr and usr.role==1:
-            # return redirect(url_for("user_dashboard",name=uname))
-            return render_template("student.html")
+            return redirect(url_for("user_dashboard",id=id))
         else:       #If user doesn't exist
             return render_template("login.html",msg="Invalid User Credential.....")
 
@@ -146,6 +144,27 @@ def get_chapter():
 def get_quiz():
     quizzes=Quiz.query.all()
     return quizzes
+
+#Admin routes are done here Start User routes
+
+# User route for home
+@app.route("/user/<id>")
+def user_dashboard(id):
+    quizzes=get_quiz()
+    return render_template("user.html",id=id,quizzes=quizzes)
+
+#Route for view quiz
+@app.route("/view_quiz/<chapter_id>/<id>")
+def view_quiz(id,chapter_id):
+    chapter=Chapter.query.filter_by(id=chapter_id).first()
+    subject=Subject.query.filter_by(id=chapter.subject_id).first()
+    return render_template("view_quiz.html" ,id=id,chapter=chapter,subject=subject)
+
+#Route for Start quiz
+@app.route("/start_quiz/<quiz_id>/<id>")
+def start_quiz(id,quiz_id):
+    questions=Question.query.filter_by(quiz_id=quiz_id).all()
+    return render_template("start_quiz.html" ,id=id,questions=questions) 
 
 
 
