@@ -1,7 +1,7 @@
 from flask import Flask , render_template,request,url_for,redirect
 from .models import *
 from flask import current_app as app
-from datetime import datetime
+from datetime import datetime,date,timezone
 
 
 @app.route("/")
@@ -158,13 +158,32 @@ def user_dashboard(id):
 def view_quiz(id,chapter_id):
     chapter=Chapter.query.filter_by(id=chapter_id).first()
     subject=Subject.query.filter_by(id=chapter.subject_id).first()
+
     return render_template("view_quiz.html" ,id=id,chapter=chapter,subject=subject)
 
-#Route for Start quiz
-@app.route("/start_quiz/<quiz_id>/<id>")
+#Route for Start quiz and submitted the exam 
+@app.route("/start_quiz/<quiz_id>/<id>", methods=["GET","POST"])
 def start_quiz(id,quiz_id):
+    quiz=Quiz.query.filter_by(id=quiz_id).first() #for the tiem validation
     questions=Question.query.filter_by(quiz_id=quiz_id).all()
-    return render_template("start_quiz.html" ,id=id,questions=questions) 
+    
+    if request.method=="POST":
+        timestamp=datetime.now(timezone.utc)
+        score = 0
+        for question in questions:
+            user_answer = request.form.get(f'{question.id}')
+            if user_answer == question.correct_option:
+                score += 1
+        submit=Score(quiz_id=quiz_id,user_id=id,total_scored=score,time_stamp_of_attempt=timestamp)
+        db.session.add(submit)
+        db.session.commit()
+    elif quiz.date_of_quiz==date.today():
+     return render_template("start_quiz.html" ,id=id,questions=questions,quiz_id=quiz_id) 
+    
+    else:
+        return
+
+
 
 
 

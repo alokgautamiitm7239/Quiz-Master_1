@@ -9,30 +9,31 @@
                     <h3 class="card-title mb-0">Answer the below question</h3>
                 </div>
                 <div class="card-body">
-                    {%for question in questions%}
-                    <form>
+                    <form method="POST" action="/start_quiz/{{quiz_id}}/{{id}}">
+                     {%for question in questions%}
                         <div class="mb-3">
                             <label class="form-label">{{question.id}}. {{question.question_statement}}</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="q1" value="Paris">
+                                <input class="form-check-input" type="radio" name="{{question.id}}" value="{{question.option1}}">
                                 <label class="form-check-label">{{question.option1}}</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="q1" value="London">
+                                <input class="form-check-input" type="radio" name="{{question.id}}" value="{{question.option2}}">
                                 <label class="form-check-label">{{question.option2}}</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="q1" value="Berlin">
+                                <input class="form-check-input" type="radio" name="{{question.id}}" value="{{question.option3}}">
                                 <label class="form-check-label">{{question.option3}}</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="q1" value="Berlin">
+                                <input class="form-check-input" type="radio" name="{{question.id}}" value="{{question.option4}}">
                                 <label class="form-check-label">{{question.option4}}</label>
                             </div>
                         </div>
+                      {%endfor%}                
+                      <button type="submit" class="btn btn-success">Submit</button>
                     </form>
-                {%endfor%}               
-                <button type="submit" class="btn btn-success">Submit</button>
+                               
                 </div>
             </div>
         </div>
