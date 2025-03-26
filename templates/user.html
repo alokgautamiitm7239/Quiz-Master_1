@@ -34,8 +34,10 @@
                                 </td>
                             </tr>
                             {% endfor %}
-                        </tbody>
                     </table>
+                    {%if msg%}
+                    <div  class="center"><h5>{{msg}}</h5></div> 
+                    {%endif%}
             </div>
         </div>
     {% else %}

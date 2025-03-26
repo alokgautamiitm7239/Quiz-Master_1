@@ -1,7 +1,11 @@
-from flask import Flask , render_template,request,url_for,redirect
+from flask import Flask , render_template, request, url_for, redirect, Response
 from .models import *
 from flask import current_app as app
 from datetime import datetime,date,timezone
+#for the charts
+import matplotlib.pyplot as plt 
+import matplotlib
+matplotlib.use('Agg')
 
 
 @app.route("/")
@@ -150,8 +154,9 @@ def get_quiz():
 # User route for home
 @app.route("/user/<id>")
 def user_dashboard(id):
+    msg = request.args.get('msg')
     quizzes=get_quiz()
-    return render_template("user.html",id=id,quizzes=quizzes)
+    return render_template("user.html",id=id,quizzes=quizzes,msg=msg)
 
 #Route for view quiz
 @app.route("/view_quiz/<chapter_id>/<id>")
@@ -170,20 +175,97 @@ def start_quiz(id,quiz_id):
     if request.method=="POST":
         timestamp=datetime.now(timezone.utc)
         score = 0
+        count=0
         for question in questions:
+            count+=1
             user_answer = request.form.get(f'{question.id}')
             if user_answer == question.correct_option:
                 score += 1
         submit=Score(quiz_id=quiz_id,user_id=id,total_scored=score,time_stamp_of_attempt=timestamp)
         db.session.add(submit)
         db.session.commit()
+        t_score=f"{score}"+"/"+f"{count}"
+        return redirect(url_for("user_dashboard",id=id,msg="Thank you! Quiz Submission Successfully Your Score : "+t_score))
+
     elif quiz.date_of_quiz==date.today():
      return render_template("start_quiz.html" ,id=id,questions=questions,quiz_id=quiz_id) 
     
     else:
-        return
+        return redirect(url_for("user_dashboard",id=id,msg="Quiz not started yet"))
 
 
+
+#  route for score
+@app.route("/score/<id>")
+def score(id):
+    score=Score.query.filter_by(user_id=id).all()
+    return render_template("score.html",id=id,scores=score)
+
+
+#Summary for admin
+@app.route("/summary/<id>")
+def ad_summary(id):
+    subjects = Subject.query.all()
+    subject_names = []
+    top_scores = []
+    attempt_counts = []
+    for subject in subjects:
+        subject_names.append(subject.name)
+        max_score = 0
+        attempts = 0
+        for chapter in subject.chapters:
+            for quiz in chapter.quizzes:
+                # Count attempts
+                attempts += len(quiz.scores)
+                # Find max score
+                for score in quiz.scores:
+                    if score.total_scored > max_score:
+                        max_score = score.total_scored
+        top_scores.append(max_score)
+        attempt_counts.append(attempts)
+
+        
+    plt.figure(figsize=(7, 5))
+    plt.bar(subject_names,top_scores)
+    plt.ylabel('Scores')
+    plt.title('Subject wise top score')
+    plt.savefig("static/bar.png")
+    plt.close #remove the chart from the memory
+
+#Pie chart 
+    plt.figure(figsize=(6, 6))
+    plt.pie(attempt_counts, 
+            labels=subject_names, 
+            autopct='%1.1f%%')
+    plt.title('Quiz Attempts by Subject')
+    plt.savefig("static/pie.png")
+    plt.close()
+    return render_template("ad_summary.html",id=id)
+
+#for user dash board
+@app.route("/u_summary/<user_id>")
+def u_summary(user_id):
+    quiz_data = db.session.query(
+        Quiz.id,
+        Quiz.date_of_quiz,
+        Score.total_scored
+    ).join(
+        Score, Quiz.id == Score.quiz_id
+    ).filter(
+        Score.user_id == user_id
+    ).all()
+
+    quiz_names = [f"Quiz {q.id}" for q in quiz_data] 
+    scores = [q.total_scored for q in quiz_data]
+    
+    plt.figure(figsize=(10, 5))
+    plt.bar(quiz_names,scores)
+    plt.ylabel('Quiz score')
+    plt.title('Quiz wise scores')
+    plt.savefig("static/u_bar.png")
+    plt.close()
+
+    return render_template("u_summary.html",id=user_id)
 
 
 

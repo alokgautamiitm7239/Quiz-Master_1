@@ -12,7 +12,7 @@ class User_Info(db.Model):
     full_name = db.Column(db.String(), nullable=False)
     qualification = db.Column(db.String(), nullable=False)
     dob = db.Column(db.Date, nullable=False) 
-    scores = db.relationship("Score", cascade="all,delete", backref="user_info", lazy=True)
+    scores = db.relationship("Score", cascade="all,delete-orphan", backref="user_info", lazy=True)
 
 # Entity 2: Subject
 class Subject(db.Model):
@@ -29,7 +29,7 @@ class Chapter(db.Model):
     name = db.Column(db.String(), nullable=False)
     description = db.Column(db.String(), nullable=False)
     subject_id = db.Column(db.Integer, db.ForeignKey("subject.id"), nullable=False, index=True)
-    quizzes = db.relationship("Quiz", cascade="all,delete", backref="chapter", lazy=True)
+    quizzes = db.relationship("Quiz", cascade="all,delete-orphan", backref="chapter", lazy=True)
 
 # Entity 4: Quiz
 class Quiz(db.Model):
@@ -39,8 +39,8 @@ class Quiz(db.Model):
     time_duration_minutes = db.Column(db.Integer, nullable=False)
     chapter_id = db.Column(db.Integer, db.ForeignKey("chapter.id"), nullable=False, index=True)
     remark = db.Column(db.String(), nullable=True ,default="No remark")
-    questions = db.relationship("Question", cascade="all,delete", backref="quiz", lazy=True)
-    scores = db.relationship("Score", cascade="all,delete", backref="quiz", lazy=True)
+    questions = db.relationship("Question", cascade="all,delete-orphan", backref="quiz", lazy=True)
+    scores = db.relationship("Score", cascade="all,delete-orphan", backref="quiz", lazy=True)
 
 # Entity 5: Question
 class Question(db.Model):
