@@ -1,0 +1,42 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+<br><br><br><br>
+    <div class="login-container">
+        <h3 >Edit Questions</h3>
+        <form action="/edit_que/{{quiz_id}}/{{que_id}}/{{id}}" method="POST">
+            <div class="input-group">
+                <label for="que_st">Question statement :</label>
+                <input type="text" name="que_st" placeholder="Enter Question statement here..." id="name"  required>
+            </div>
+            <div class="input-group">
+                <label for="opt1">Option 1:</label>
+                <input type="text" name="opt1" id="opt1"  required>
+            </div>
+            <div class="input-group">
+                <label for="opt2">Option 2:</label>
+                <input type="text" name="opt2" id="opt2"  required>
+            </div>
+            <div class="input-group">
+                <label for="opt3">Option 3:</label>
+                <input type="text" name="opt3" id="opt3"  required>
+            </div>
+            <div class="input-group">
+                <label for="opt4">Option 4:</label>
+                <input type="text" name="opt4" id="opt4"  required>
+            </div>
+            <div class="input-group">
+                <label for="crt">Correct option:</label>
+                <input type="text" name="crt" id="crt"  required>
+            </div>
+            <div class="input-group">
+                <label for="id">Quiz ID :</label>     
+                <input name="id" type="number" id="id"  value="{{quiz_id}}" readonly>  <!-- This is for only read the data but not show in page  -->
+            </div>
+
+            <button type="submit">Save</button>
+            <a href="/admin_quiz/{{id}}" type="button" class="btn">Go Back</a>
+            <br>
+        </form>
+        <div class="center">{{msg}}</div>
+    </div>
+{% endblock %}

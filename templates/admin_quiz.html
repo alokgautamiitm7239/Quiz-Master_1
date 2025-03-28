@@ -15,6 +15,9 @@
             <div class="card h-100 d-flex flex-column">
                 <div class="card-body flex-grow-1">
                  <h5 class="card-title" style="color: rgb(149, 3, 3); font-weight: bold; font-family: Georgia, 'Times New Roman', Times, serif;">Quiz Id : {{ quiz.id }}</h5>
+                 <a href="/edit_quiz/{{quiz.id}}/{{id}}" class="btn btn-sm btn-warning">Edit</a>
+                 <a href="/delete_quiz?quiz_id={{quiz.id}}&id={{id}}" class="btn btn-sm btn-danger">Delete</a>
+                 <br><br>
                  <h6 style="color: blue;">Date of Quiz : {{quiz.date_of_quiz}}</h6>
                  <h6>Time duration(In Minutes) : {{quiz.time_duration_minutes}}</h6>
                     <div class="table-responsive">
@@ -33,10 +36,10 @@
                                  {% for question in quiz.questions%}
                                 <tr>
                                     <td>{{question.id}}</td>
-                                    <td class="signup-link"><a href="" style="color: black;">{{question.question_statement}}</a></td>
+                                    <td class="signup-link"><a href="/admin_que/{{question.id}}/{{id}}" style="color: black;">{{question.question_statement}}</a></td>
                                     <td>
-                                        <a href="#" class="text-primary">Edit</a> /
-                                        <a href="#" class="text-danger">Delete</a>
+                                        <a href="/edit_que/{{quiz.id}}/{{question.id}}/{{id}}" class="text-primary">Edit</a> /
+                                        <a href="/delete_question?question_id={{question.id}}&id={{id}}" class="text-danger">Delete</a>
                                     </td>
                                 </tr>
                                 {%endfor%}

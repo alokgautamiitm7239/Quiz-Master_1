@@ -15,7 +15,9 @@
             <div class="card h-100 d-flex flex-column">
                 <div class="card-body flex-grow-1">
                  <h5 class="card-title" style="color: rgb(149, 3, 3); font-weight: bold;">{{ subject.name }}</h5>
-                    <div class="table-responsive">
+                 <a href="/edit_subject/{{subject.id}}/{{id}}" class="btn btn-sm btn-warning">Edit</a>
+                 <a href="/delete_subject?sub_id={{subject.id}}&id={{id}}" class="btn btn-sm btn-danger">Delete</a>
+                    <div class="table-responsive p-3">
                         <table class="table table-bordered table-striped">
                         {% if subject.chapters %}
                             <thead class="thead-dark">
@@ -34,8 +36,8 @@
                                     <td >{{chapter.name}}</td>
                                     <td>{{chapter.description}}</td>
                                     <td>
-                                        <a href="#" class="btn btn-sm btn-warning">Edit</a> 
-                                       <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                                        <a href="/edit_chapter/{{subject.id}}/{{chapter.id}}/{{id}}" class="btn btn-sm btn-warning">Edit</a> 
+                                       <a href="/delete_chapter?chapter_id={{chapter.id}}&id={{id}}" class="btn btn-sm btn-danger">Delete</a>
                                     </td>
                                 </tr>
                                 {%endfor%}
@@ -51,7 +53,8 @@
                 </div>
                 <div class="card-footer bg-white border-top-0">
                     <!-- Add Chapter Button -->
-                    <a href="/add_chapter/{{subject.id}}/{{id}}" class="btn btn-outline-success w-100">+ Add Chapter</a>
+                    <a href="/add_chapter/{{subject.id}}/{{id}}" class="btn btn-outline-success w-100">+ Add Chapter</a>                    
+
                 </div>
             </div>
         </div>

@@ -11,7 +11,7 @@ class User_Info(db.Model):
     role = db.Column(db.Integer, default=1)
     full_name = db.Column(db.String(), nullable=False)
     qualification = db.Column(db.String(), nullable=False)
-    dob = db.Column(db.Date, nullable=False) 
+    dob = db.Column(db.Date, nullable=False)
     scores = db.relationship("Score", cascade="all,delete-orphan", backref="user_info", lazy=True)
 
 # Entity 2: Subject
@@ -58,7 +58,7 @@ class Question(db.Model):
 class Score(db.Model):
     __tablename__ = 'score'
     id = db.Column(db.Integer, primary_key=True)
-    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable=False, index=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_info.id'), nullable=False, index=True)
+    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id' ,ondelete='CASCADE'), nullable=False, index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_info.id', ondelete='CASCADE'), nullable=False, index=True)
     time_stamp_of_attempt = db.Column(db.DateTime, nullable=False)
     total_scored = db.Column(db.Integer, nullable=False)

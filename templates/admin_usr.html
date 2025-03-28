@@ -1,0 +1,50 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+<h3 class="p-3" style="font-family: 'Times New Roman', Times, serif; font-weight: bold;">
+    User Management !
+</h3>
+
+<div class="container mt-4">
+    {% if users %}
+        <div class="card shadow-lg">
+            <div class="card-header text-center bg-primary text-white">
+                <h5 class="card-title mb-0">Existing users</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>User name</th>
+                                <th>Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {%for user in users %}
+                            {%if user.role==1%}
+                            <tr>
+                                <td>{{ user.full_name }}</td>
+                                <td>{{ user.email}}</td>
+                                <td>
+                                    <a href="/delete_user?user_id={{user.id}}&id={{id}}" class="btn btn-sm btn-danger">Block/Delete</a>
+                                </td>
+                            </tr>
+                            {%endif%}
+                        {%endfor%}
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center mt-4">
+            <h5>No users are exist</h5>
+        </div>
+    {% endif %}
+   </div>
+
+
+
+   
+
+{% endblock %}

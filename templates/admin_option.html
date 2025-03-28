@@ -1,0 +1,32 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+<div class="container mt-4" style="text-align: center;">
+        <div class="card shadow-lg">
+                <div class="card-body">
+                    <div class="table-responsive" >
+                        <table class="table table-bordered table-striped" >
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Question Details </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Question Statement : {{question.question_statement}} <br>
+                                        Option1 : {{ question.option1 }} <br>
+                                        Option2 : {{ question.option2 }} <br>
+                                        Option3 : {{ question.option3 }} <br>
+                                        Option4 : {{ question.option4 }} <br>
+                                        Correct Option : {{ question.correct_option }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+              </div>
+                <a href="/admin_quiz/{{id}}" class="btn btn-primary">Go Back</a>
+         </div>
+</div>
+{% endblock %}

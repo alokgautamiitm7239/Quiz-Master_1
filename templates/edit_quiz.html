@@ -1,0 +1,33 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+<br><br><br><br>
+    <div class="login-container">
+        <h3 >Edit Quiz</h3>
+        <form action="/edit_quiz/{{quiz_id}}/{{id}}" method="POST">
+            {%if chapters %}                
+            <div class="input-group">
+                <select id="name" name="name" class="form-select">
+                    <option value="" disabled selected>Select chapter...</option>
+                    {%for chapter in chapters%}
+                    <option value="{{chapter.id}}">{{chapter.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+
+            <div class="input-group">
+                <label for="date">Date of quiz :</label>
+                <input type="date" name="date" id="date" required>
+            </div>
+
+            <div class="input-group">
+                <label for="duration">Time duration :</label>
+                <input type="number" name="duration" id="duration" placeholder="In minuts" required>
+            </div>
+            <button type="submit">Save</button>
+            <a href="/admin_quiz/{{id}}" type="button" class="btn">Go Back</a>
+            <br>
+        </form>
+        <div class="center">{{msg}}</div>
+    </div>
+{% endblock %}

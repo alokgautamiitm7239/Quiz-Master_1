@@ -131,10 +131,148 @@ def add_que(id,quiz_id):
         db.session.add(que)
         db.session.commit()
         return render_template("add_question.html",msg="Question added successfully" ,id=id)
-
-    
     return render_template("add_question.html",id=id,quiz_id=quiz_id)
 
+#route for que option
+@app.route("/admin_que/<que_id>/<id>")
+def que_opt(que_id,id):
+    question=Question.query.filter_by(id=que_id).first()
+    return render_template("admin_option.html",id=id ,question=question)
+
+#Route for user managment
+@app.route("/admin_user/<id>")
+def usr(id):
+    users=User_Info.query.all()
+    return render_template("admin_usr.html" ,id=id ,users=users)
+
+#Route for delete user
+@app.route("/delete_user")
+def delete_user():
+    id=request.args.get('id')
+    user_id=request.args.get('user_id')
+    user = User_Info.query.get(user_id) 
+    db.session.delete(user)
+    db.session.commit()
+    users = User_Info.query.all() 
+    return render_template("admin_usr.html",id=id,users=users)
+
+
+#Route for admin search
+@app.route("/search/<id>", methods=["GET","POST"])
+def search(id):
+    if request.method=="POST":
+        search_txt=request.form.get("search_txt")
+        by_subject=search_by_subject(search_txt)
+        by_quiz=search_by_quiz(search_txt)
+        by_user=search_by_user(search_txt)
+        if by_subject:
+            return render_template("admin.html",id=id,subjects=by_subject)
+
+        elif by_quiz:
+            return render_template("admin_quiz.html",id=id,quizzes=by_quiz)
+        
+        else:
+            return render_template("admin_usr.html",id=id,users=by_user)
+    
+    return render_template("admin.html" ,id=id)
+
+
+#Edit subject
+@app.route("/edit_subject/<sub_id>/<id>", methods=["GET","POST"])
+def edit_sub(sub_id,id):
+    subject=Subject.query.get(sub_id)
+    if request.method=="POST": #For register new theatre
+        subject.name=request.form.get("name")
+        subject.description=request.form.get("description")
+        db.session.commit()
+        return render_template("edit_subject.html",msg="Edit successfully" ,id=id)
+    return render_template("edit_subject.html" ,id=id,sub_id=sub_id)
+
+#Delete subject
+@app.route("/delete_subject")
+def delete_sub():
+    id=request.args.get('id')
+    sub_id=request.args.get('sub_id')
+    subject = Subject.query.get(sub_id) 
+    db.session.delete(subject)
+    db.session.commit()
+    return redirect(url_for('admin_dashboard',id=id)) 
+
+#Edit quiz
+@app.route("/edit_quiz/<quiz_id>/<id>", methods=["GET","POST"])
+def edit_quiz(quiz_id,id):
+    quiz=Quiz.query.get(quiz_id)
+    quizzes=get_quiz()
+    chapters=get_chapter()
+
+    if request.method=="POST":
+        quiz.chapter_id=request.form.get("name")
+        str_date=request.form.get("date")
+        quiz.date_of_quiz= datetime.strptime(str_date, "%Y-%m-%d").date()
+        quiz.time_duration_minutes=request.form.get("duration")
+        db.session.commit()
+        return render_template("edit_quiz.html",msg="Edit successfully" ,id=id)
+    return render_template("edit_quiz.html",id=id,quiz_id=quiz_id,quizzes=quizzes,chapters=chapters)
+
+#Delete quiz
+@app.route("/delete_quiz")
+def delete_quiz():
+    id=request.args.get('id')
+    quiz_id=request.args.get('quiz_id')
+    quiz = Quiz.query.get(quiz_id)  
+    db.session.delete(quiz)
+    db.session.commit()
+    return redirect(url_for('admin_quiz',id=id))
+
+#Edit chapter
+@app.route("/edit_chapter/<sub_id>/<chap_id>/<id>", methods=["GET","POST"])
+def edit_chapter(sub_id,id,chap_id):
+    chapter=Chapter.query.get(chap_id)
+    if request.method=="POST":
+        chapter.name=request.form.get("name")
+        chapter.description=request.form.get("description")
+        chapter.subject_id=request.form.get("id")
+        db.session.commit()
+        return render_template("edit_chapter.html",msg="Edit successfully" ,id=id,sub_id=sub_id)
+    return render_template("edit_chapter.html" ,id=id,sub_id=sub_id,chap_id=chap_id)
+
+#Delete chapter
+@app.route("/delete_chapter")
+def delete_chap():
+    id=request.args.get('id')
+    chap_id=request.args.get('chapter_id')
+    chapter = Chapter.query.get(chap_id)  
+    db.session.delete(chapter)
+    db.session.commit()
+    return redirect(url_for('admin_dashboard',id=id))
+
+#Edit Question
+@app.route("/edit_que/<quiz_id>/<que_id>/<id>",methods=["GET","POST"])
+def edit_que(id,quiz_id,que_id):
+    question=Question.query.get(que_id)
+    if request.method=="POST":
+        question.question_statement=request.form.get("que_st")
+        question.option1=request.form.get("opt1")
+        question.option2=request.form.get("opt2")
+        question.option3=request.form.get("opt3")
+        question.option4=request.form.get("opt4")
+        question.correct_option=request.form.get("crt")
+        quiz_id=request.form.get("id")
+        db.session.commit()
+        return render_template("edit_question.html",msg="Edit successfully" ,id=id)
+    return render_template("edit_question.html",id=id,quiz_id=quiz_id,que_id=que_id)
+
+#Delete question
+@app.route("/delete_question")
+def delete_que():
+    id=request.args.get('id')
+    que_id=request.args.get('question_id')
+    question = Question.query.get(que_id)  
+    db.session.delete(question)
+    db.session.commit()
+    return redirect(url_for('admin_quiz',id=id)) 
+
+    
 #Complementry function 
 
 def get_subject():
@@ -147,6 +285,18 @@ def get_chapter():
 
 def get_quiz():
     quizzes=Quiz.query.all()
+    return quizzes
+
+def search_by_user(search_txt):
+    users=User_Info.query.filter(User_Info.full_name.ilike(f"%{search_txt}%")).all()
+    return users
+
+def search_by_subject(search_txt): 
+    subjects=Subject.query.filter(Subject.name.ilike(f"%{search_txt}%")).all() #ilike--> i use for case sensation and like for random filter
+    return subjects
+
+def search_by_quiz(search_txt):
+    quizzes=Quiz.query.filter(Quiz.id.ilike(f"%{search_txt}%")).all()
     return quizzes
 
 #Admin routes are done here Start User routes
@@ -195,7 +345,7 @@ def start_quiz(id,quiz_id):
 
 
 
-#  route for score
+# Route for score
 @app.route("/score/<id>")
 def score(id):
     score=Score.query.filter_by(user_id=id).all()
@@ -240,7 +390,7 @@ def ad_summary(id):
     plt.title('Quiz Attempts by Subject')
     plt.savefig("static/pie.png")
     plt.close()
-    return render_template("ad_summary.html",id=id)
+    return render_template("admin_summary.html",id=id)
 
 #for user dash board
 @app.route("/u_summary/<user_id>")
@@ -265,7 +415,7 @@ def u_summary(user_id):
     plt.savefig("static/u_bar.png")
     plt.close()
 
-    return render_template("u_summary.html",id=user_id)
+    return render_template("user_summary.html",id=user_id)
 
 
 
