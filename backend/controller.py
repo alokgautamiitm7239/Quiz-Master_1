@@ -337,8 +337,11 @@ def start_quiz(id,quiz_id):
         t_score=f"{score}"+"/"+f"{count}"
         return redirect(url_for("user_dashboard",id=id,msg="Thank you! Quiz Submission Successfully Your Score : "+t_score))
 
+    elif quiz.date_of_quiz < date.today():
+     return redirect(url_for("user_dashboard",id=id,msg="Due date is passed for quiz"))
+    
     elif quiz.date_of_quiz==date.today():
-     return render_template("start_quiz.html" ,id=id,questions=questions,quiz_id=quiz_id) 
+     return render_template("start_quiz.html" ,id=id,questions=questions,quiz_id=quiz_id)
     
     else:
         return redirect(url_for("user_dashboard",id=id,msg="Quiz not started yet"))
