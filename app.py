@@ -7,7 +7,7 @@ def setup_app():
     app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///ticket_show.sqlite3"
     db.init_app(app)
     app.app_context().push()
-    app.debug=True
+    # app.debug=True
     print("Quiz master app is starting.....")
 
 setup_app()
